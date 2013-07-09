@@ -1,0 +1,57 @@
+{**
+ * My Application layout template.
+ *
+ * @param string   $basePath web base path
+ * @param string   $robots   tell robots how to index the content of a page (optional)
+ * @param array    $flashes  flash messages
+ *}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="robots" content="{$robots}" n:ifset="$robots">
+
+	<title>{#title|striptags|upper}Nette Application Skeleton{/#}</title>
+
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/bootstrap/bootstrap.css">
+	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+	{#head}{/#}
+</head>
+
+<body>
+	<script> document.documentElement.className+=' js' </script>
+
+	<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+
+	{include #content}
+
+	{#scripts}
+	<script src="{$basePath}/js/jquery.js"></script>
+	<script src="{$basePath}/js/bootstrap/bootstrap.js"></script>
+	<script src="{$basePath}/js/netteForms.js"></script>
+	<script src="{$basePath}/js/nette.ajax/nette.ajax.js"></script>
+	<script src="{$basePath}/js/main.js"></script>
+	{/#}
+
+	<script type="text/javascript">
+		$(function(){
+			$('#modal').on('shown', function(){
+
+				$.nette.load();
+
+				$(this).find('form.modal-form').each(function(){
+					Nette.initForm(this);
+				});
+
+				$(this).off('click').on('click', '.modal-submit-button', function(){
+					//$('.form-button').click(); // Provede normálně jednu validaci
+					$('.modal-form').submit(); // Provede dvojí validaci
+					return false;
+				});
+			});
+		});
+	</script>
+</body>
+</html>
